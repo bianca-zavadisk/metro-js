@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>MetroJS: Análise Topológica de Malhas</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <h2>MetroJS</h2>
+            <p class="subtitle">Análise e Distância Sinalizada</p>
+
+            <div class="control-group">
+                <label for="sample-count">Pontos: <span id="sample-val">1000</span></label>
+                <input type="range" id="sample-count" min="100" max="10000" step="100" value="1000">
+            </div>
+
+            <button id="btn-analyze" class="btn-primary">Executar Análise Metro</button>
+
+            <div class="telemetry-panel">
+                <h3>Resultados Topológicos</h3>
+                <p>Manifold: <span id="out-manifold">-</span></p>
+                <p>Componentes: <span id="out-components">-</span></p>
+                
+                <h3>Métricas de Erro</h3>
+                <p>Erro Máx Pos (+): <span id="out-max-pos" class="text-blue">-</span></p>
+                <p>Erro Máx Neg (-): <span id="out-max-neg" class="text-red">-</span></p>
+                <p>Erro RMS: <span id="out-rms">-</span></p>
+            </div>
+        </aside>
+
+        <main class="canvas-container">
+            <canvas id="metro-canvas"></canvas>
+        </main>
+    </div>
+    <script src="js/bundle.js"></script>
+</body>
+</html>
