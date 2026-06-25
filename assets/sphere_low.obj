@@ -1,0 +1,19 @@
+# MetroJS sample mesh — ultra-low-res sphere (simplified)
+# 6 vertices, 8 faces — octahedron approximation of sphere
+# Use this as Mesh B (approximation) to test the Metro analyser
+
+v  0.000  1.000  0.000
+v  1.000  0.000  0.000
+v  0.000  0.000  1.000
+v -1.000  0.000  0.000
+v  0.000  0.000 -1.000
+v  0.000 -1.000  0.000
+
+f 1 2 3
+f 1 3 4
+f 1 4 5
+f 1 5 2
+f 6 3 2
+f 6 4 3
+f 6 5 4
+f 6 2 5
