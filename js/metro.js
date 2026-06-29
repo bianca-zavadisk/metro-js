@@ -12,7 +12,7 @@
  * closest point relative to the vector from the closest point to the sample.
  */
 
-import { triangleArea, faceNormal } from './topology.js';
+// import { triangleArea, faceNormal } from './topology.js';
 
 // ── BVH ────────────────────────────────────────────────────────────────────
 
@@ -173,7 +173,7 @@ function sampleTriangle(a, b, c) {
  * @param {Function} onProgress Progress callback (fraction 0-1, logMessage)
  * @returns {Object}
  */
-export async function computeMetro(meshA, meshB, numSamples, onProgress) {
+async function computeMetro(meshA, meshB, numSamples, onProgress) {
   const { vertices: vA, faces: fA } = meshA;
   const { vertices: vB, faces: fB } = meshB;
 

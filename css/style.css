@@ -466,16 +466,22 @@ a:hover { text-decoration: underline; }
   cursor: pointer;
   transition: border-color var(--transition), background var(--transition);
   position: relative;
+  user-select: none;
 }
 .upload-zone:hover, .upload-zone.drag-over {
   border-color: var(--accent);
   background: var(--accent-dim);
 }
-.upload-zone input[type="file"] {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
+.upload-zone.drag-over {
+  border-style: solid;
+}
+.upload-zone.loaded {
+  border-color: rgba(0,212,170,0.4);
+  background: rgba(0,212,170,0.05);
+}
+.upload-zone.loaded:hover {
+  border-color: var(--pos);
+  background: rgba(0,212,170,0.1);
 }
 .upload-icon { font-size: 2rem; margin-bottom: 0.75rem; }
 .upload-text {

@@ -6,7 +6,7 @@
 
 const DEG = Math.PI / 180;
 
-export class MeshRenderer {
+class MeshRenderer {
   constructor(canvas) {
     this.canvas  = canvas;
     this.ctx     = canvas.getContext('2d');
@@ -315,7 +315,7 @@ function lerp(a, b, t) { return a + (b - a) * t; }
 
 // ── Hero canvas — animated wireframe mesh ─────────────────────────────────
 
-export function startHeroCanvas(canvas) {
+function startHeroCanvas(canvas) {
   const ctx = canvas.getContext('2d');
   const pts = [];
   const N   = 42;

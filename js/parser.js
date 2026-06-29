@@ -3,7 +3,7 @@
  * Parses Wavefront .obj files into an internal mesh representation.
  */
 
-export function parseOBJ(text) {
+function parseOBJ(text) {
   const vertices = [];  // [x, y, z, ...]
   const faces = [];     // [[i0, i1, i2], ...]
   const normals = [];
@@ -36,7 +36,7 @@ export function parseOBJ(text) {
 /**
  * Build a Mesh object from raw arrays.
  */
-export function buildMesh(vertices, faces) {
+function buildMesh(vertices, faces) {
   return {
     vertices,
     faces,
@@ -50,7 +50,7 @@ export function buildMesh(vertices, faces) {
 /**
  * Normalize mesh to fit in [-1,1]^3 bounding box.
  */
-export function normalizeMesh(mesh) {
+function normalizeMesh(mesh) {
   const V = mesh.vertices;
   if (V.length === 0) return mesh;
 

@@ -6,7 +6,7 @@
 /**
  * Analyse a mesh and return full topological report.
  */
-export function analyzeMesh(mesh) {
+function analyzeMesh(mesh) {
   const { vertices, faces } = mesh;
   const V = vertices.length;
   const F = faces.length;
@@ -120,7 +120,7 @@ export function analyzeMesh(mesh) {
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
-export function computeVertexNormals(vertices, faces) {
+function computeVertexNormals(vertices, faces) {
   const normals = vertices.map(() => [0, 0, 0]);
 
   for (const [a, b, c] of faces) {
@@ -138,7 +138,7 @@ export function computeVertexNormals(vertices, faces) {
   });
 }
 
-export function faceNormal(a, b, c) {
+function faceNormal(a, b, c) {
   const ux = b[0]-a[0], uy = b[1]-a[1], uz = b[2]-a[2];
   const vx = c[0]-a[0], vy = c[1]-a[1], vz = c[2]-a[2];
   const nx = uy*vz - uz*vy;
@@ -148,7 +148,7 @@ export function faceNormal(a, b, c) {
   return [nx/len, ny/len, nz/len];
 }
 
-export function triangleArea(a, b, c) {
+function triangleArea(a, b, c) {
   const ux = b[0]-a[0], uy = b[1]-a[1], uz = b[2]-a[2];
   const vx = c[0]-a[0], vy = c[1]-a[1], vz = c[2]-a[2];
   const cx = uy*vz - uz*vy;
@@ -158,7 +158,7 @@ export function triangleArea(a, b, c) {
 }
 
 /** Surface area of a mesh */
-export function surfaceArea(vertices, faces) {
+function surfaceArea(vertices, faces) {
   let area = 0;
   for (const [a, b, c] of faces) {
     area += triangleArea(vertices[a], vertices[b], vertices[c]);

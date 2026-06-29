@@ -3,10 +3,10 @@
  * Wires parser → topology → renderer → metro pipeline.
  */
 
-import { parseOBJ, normalizeMesh } from './parser.js';
-import { analyzeMesh, surfaceArea } from './topology.js';
-import { computeMetro } from './metro.js';
-import { MeshRenderer, startHeroCanvas } from './renderer.js';
+// import { parseOBJ, normalizeMesh } from './parser.js';
+// import { analyzeMesh, surfaceArea } from './topology.js';
+// import { computeMetro } from './metro.js';
+// import { MeshRenderer, startHeroCanvas } from './renderer.js';
 
 // ── State ──────────────────────────────────────────────────────────────────
 const state = {
@@ -26,10 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
   startHeroCanvas($('hero-canvas'));
   state.renderer = new MeshRenderer($('mesh-canvas'));
 
-  setupUploadZone('upload-a', 'label-a', file => handleMeshLoad(file, 'A'));
-  setupUploadZone('upload-b', 'label-b', file => handleMeshLoad(file, 'B'));
+  setupUploadZone('upload-a', 'drop-a', 'browse-a', file => handleMeshLoad(file, 'A'));
+  setupUploadZone('upload-b', 'drop-b', 'browse-b', file => handleMeshLoad(file, 'B'));
 
   $('run-btn').addEventListener('click', runAnalysis);
+  $('load-example-btn').addEventListener('click', loadExampleMeshes);
   $('mode-select').addEventListener('change', e => {
     state.renderer.setMode(e.target.value);
   });
@@ -38,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   setupNav();
-  addLog('info', 'MetroJS initialised. Upload a mesh to begin.');
+  addLog('info', 'MetroJS initialised. Upload a mesh or load the example.');
 });
 
 // ── Navigation ─────────────────────────────────────────────────────────────
@@ -61,54 +62,109 @@ function setupNav() {
 }
 
 // ── File upload ─────────────────────────────────────────────────────────────
-function setupUploadZone(inputId, labelId, cb) {
-  const input = $(inputId);
-  const label = $(labelId);
+function setupUploadZone(inputId, dropId, browseId, cb) {
+  const input  = $(inputId);
+  const drop   = $(dropId);
+  const browse = $(browseId);
 
+  // "Browse file…" button opens the file picker
+  browse.addEventListener('click', () => input.click());
+
+  // File chosen via picker
   input.addEventListener('change', e => {
-    if (e.target.files[0]) cb(e.target.files[0]);
+    if (e.target.files[0]) {
+      cb(e.target.files[0]);
+      input.value = ''; // allow re-selecting the same file
+    }
   });
 
-  label.addEventListener('dragover', e => {
-    e.preventDefault();
-    label.classList.add('drag-over');
+  // Drag-and-drop on the zone div (no input covering it)
+  drop.addEventListener('dragenter', e => { e.preventDefault(); drop.classList.add('drag-over'); });
+  drop.addEventListener('dragover',  e => { e.preventDefault(); drop.classList.add('drag-over'); });
+  drop.addEventListener('dragleave', e => {
+    // only remove when truly leaving the drop zone (not a child)
+    if (!drop.contains(e.relatedTarget)) drop.classList.remove('drag-over');
   });
-  label.addEventListener('dragleave', () => label.classList.remove('drag-over'));
-  label.addEventListener('drop', e => {
+  drop.addEventListener('drop', e => {
     e.preventDefault();
-    label.classList.remove('drag-over');
+    drop.classList.remove('drag-over');
     const file = e.dataTransfer.files[0];
     if (file) cb(file);
   });
+
+  // Also allow clicking the drop zone itself to open picker
+  drop.addEventListener('click', () => input.click());
+  drop.style.cursor = 'pointer';
+}
+
+// ── Load example meshes from assets.js ────────────────────────────────────
+async function loadExampleMeshes() {
+  const btn = $('load-example-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Loading…';
+
+  try {
+    // Instead of fetching over the network, we parse the global text variables
+    processOBJText(SPHERE_REF_TEXT, 'sphere_ref.obj', 'A');
+    processOBJText(SPHERE_LOW_TEXT, 'sphere_low.obj', 'B');
+    addLog('ok', 'Example meshes loaded: sphere_ref.obj + sphere_low.obj');
+  } catch (err) {
+    addLog('err', `Could not load example files: ${err.message}`);
+  }
+
+  btn.disabled = false;
+  btn.textContent = '⬇ Load Example Meshes';
+}
+
+// You can now delete the fetchText(path) function completely, as it is no longer used.
+
+async function fetchText(path) {
+  const res = await fetch(path);
+  if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${path}`);
+  return res.text();
+}
+
+function processOBJText(text, filename, which) {
+  try {
+    let mesh = parseOBJ(text);
+    mesh = normalizeMesh(mesh);
+    const topo = analyzeMesh(mesh);
+    if (which === 'A') {
+      state.meshA = mesh; state.topoA = topo;
+      renderMeshInfo('info-a', mesh, topo, filename);
+      state.renderer.setMesh(mesh, topo);
+      addLog('ok', `Mesh A: ${topo.V} vertices, ${topo.F} faces.`);
+      markDropLoaded('drop-a', filename);
+    } else {
+      state.meshB = mesh; state.topoB = topo;
+      renderMeshInfo('info-b', mesh, topo, filename);
+      addLog('ok', `Mesh B: ${topo.V} vertices, ${topo.F} faces.`);
+      markDropLoaded('drop-b', filename);
+    }
+    updateRunButton();
+  } catch (err) {
+    addLog('err', `Parse error (${filename}): ${err.message}`);
+  }
+}
+
+function markDropLoaded(dropId, filename) {
+  const drop = $(dropId);
+  drop.classList.add('loaded');
+  drop.innerHTML = `
+    <div class="upload-icon">✅</div>
+    <div class="upload-text"><strong>${filename}</strong></div>
+    <div class="upload-formats">Click or drop to replace</div>
+  `;
 }
 
 function handleMeshLoad(file, which) {
   addLog('info', `Loading ${which === 'A' ? 'reference' : 'simplified'} mesh: ${file.name}…`);
   const reader = new FileReader();
   reader.onload = e => {
-    try {
-      let mesh = parseOBJ(e.target.result);
-      mesh     = normalizeMesh(mesh);
-      const topo = analyzeMesh(mesh);
-
-      if (which === 'A') {
-        state.meshA = mesh;
-        state.topoA = topo;
-        renderMeshInfo('info-a', mesh, topo, file.name);
-        state.renderer.setMesh(mesh, topo);
-        addLog('ok', `Mesh A loaded: ${topo.V} vertices, ${topo.F} faces.`);
-      } else {
-        state.meshB = mesh;
-        state.topoB = topo;
-        renderMeshInfo('info-b', mesh, topo, file.name);
-        addLog('ok', `Mesh B loaded: ${topo.V} vertices, ${topo.F} faces.`);
-      }
-
-      updateRunButton();
-    } catch (err) {
-      addLog('err', `Parse error: ${err.message}`);
-    }
+    processOBJText(e.target.result, file.name, which);
+    markDropLoaded(which === 'A' ? 'drop-a' : 'drop-b', file.name);
   };
+  reader.onerror = () => addLog('err', `Failed to read file: ${file.name}`);
   reader.readAsText(file);
 }
 
@@ -220,8 +276,8 @@ async function runAnalysis() {
     addLog('ok', `RMS error: ${results.rms.toExponential(4)}`);
 
     // Pass errors to renderer
-    state.renderer.setErrors(results.signedErrors);
     state.renderer.setMesh(state.meshA, state.topoA);
+    state.renderer.setErrors(results.signedErrors);
     state.renderer.setMode('heatmap');
     $('mode-select').value = 'heatmap';
 
