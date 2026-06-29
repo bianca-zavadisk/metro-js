@@ -218,12 +218,22 @@ async function computeMetro(meshA, meshB, numSamples, onProgress) {
     // Sign: determined by normal of closest face on meshB
     // positive  → sample is on the outside (expansion)
     // negative  → sample is on the inside  (contraction)
+    // The sign is the dot product of the normal of Mesh A at sample point p
+    // and the vector (p' - p), where p' is the closest point on Mesh B.
     let sign = 1;
     if (best.fi >= 0) {
-      const [bi,ci,di] = fB[best.fi];
-      const n = faceNormal(vB[bi], vB[ci], vB[di]);
-      const dx = pt[0]-best.pt[0], dy = pt[1]-best.pt[1], dz = pt[2]-best.pt[2];
-      if (dx*n[0]+dy*n[1]+dz*n[2] < 0) sign = -1;
+      // Normal of the sampled triangle on mesh A (S1)
+      const nA = faceNormal(vA[a], vA[b], vA[c]);
+      
+      // Vector from p (pt) to p' (best.pt)
+      const dx = best.pt[0] - pt[0];
+      const dy = best.pt[1] - pt[1];
+      const dz = best.pt[2] - pt[2];
+      
+      // Dot product N_p * (p' - p)
+      if (dx * nA[0] + dy * nA[1] + dz * nA[2] < 0) {
+        sign = -1;
+      }
     }
 
     const signedDist = sign * dist;

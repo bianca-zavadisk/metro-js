@@ -113,16 +113,16 @@ async function loadExampleMeshes() {
   }
 
   btn.disabled = false;
-  btn.textContent = '⬇ Load Example Meshes';
+  btn.textContent = '⬇ Carregar malhas de exemplo';
 }
 
 // You can now delete the fetchText(path) function completely, as it is no longer used.
 
-async function fetchText(path) {
-  const res = await fetch(path);
-  if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${path}`);
-  return res.text();
-}
+// async function fetchText(path) {
+//   const res = await fetch(path);
+//   if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${path}`);
+//   return res.text();
+// }
 
 function processOBJText(text, filename, which) {
   try {
@@ -238,10 +238,10 @@ function updateRunButton() {
   const btn = $('run-btn');
   if (state.meshA && state.meshB) {
     btn.disabled = false;
-    btn.textContent = '▶ Run Metro Analysis';
+    btn.textContent = '▶ Rodar Análise Metro';
   } else if (state.meshA || state.meshB) {
     btn.disabled = true;
-    btn.textContent = 'Upload both meshes to run';
+    btn.textContent = 'Carregue ambas as malhas para rodar';
   }
 }
 
@@ -278,8 +278,8 @@ async function runAnalysis() {
     // Pass errors to renderer
     state.renderer.setMesh(state.meshA, state.topoA);
     state.renderer.setErrors(results.signedErrors);
-    state.renderer.setMode('heatmap');
-    $('mode-select').value = 'heatmap';
+    const currentMode = $('mode-select').value;
+    state.renderer.setMode(currentMode);
 
     renderResults(results);
     $('results-section').classList.remove('hidden');
@@ -323,6 +323,7 @@ function renderResults(r) {
 
   // Error histogram
   drawHistogram($('histogram-canvas'), r.signedErrors);
+  updatePreviewViewers(state.meshA, state.topoA, state.meshB, state.topoB);
 }
 
 function drawHistogram(canvas, errors) {
@@ -331,17 +332,24 @@ function drawHistogram(canvas, errors) {
   const dpr = window.devicePixelRatio || 1;
   const W = canvas.offsetWidth || 300;
   const H = canvas.offsetHeight || 120;
-  canvas.width  = W * dpr;
-  canvas.height = H * dpr;
-  ctx.scale(dpr, dpr);
+  if (canvas.width !== W * dpr || canvas.height !== H * dpr) {
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
   const valid = errors.filter(e => !isNaN(e));
   if (valid.length === 0) return;
 
-  const minE = Math.min(...valid);
-  const maxE = Math.max(...valid);
-  const range = maxE - minE || 1;
-  const bins  = 60;
+  const bins = Math.min(50, Math.ceil(Math.sqrt(valid.length)));
+
+  const maxAbs = Math.max(...valid.map(Math.abs));
+  const minE = -maxAbs;
+  const maxE = maxAbs;
+  const range = maxE - minE;
+
   const counts = new Float64Array(bins);
 
   for (const e of valid) {
@@ -355,9 +363,15 @@ function drawHistogram(canvas, errors) {
 
   for (let i = 0; i < bins; i++) {
     const x  = (i / bins) * W;
-    const bw = W / bins - 0.5;
+    const bw = W / bins;
     const bh = (counts[i] / maxCount) * (H - 20);
-    const t  = (i / bins) * 2 - 1; // -1..1
+    
+    // Calculate the actual error value this bin represents
+    const binValue = minE + ((i + 0.5) / bins) * range;
+    
+    // Map the binValue to a -1 to 1 range for coloring
+    const maxAbsE = Math.max(Math.abs(minE), Math.abs(maxE));
+    const t = maxAbsE === 0 ? 0 : binValue / maxAbsE;
 
     let r, g, b;
     if (t < 0) {
@@ -375,7 +389,7 @@ function drawHistogram(canvas, errors) {
   }
 
   // Zero line
-  const zx = ((-minE) / range) * W;
+  const zx = Math.max(0, Math.min(W, ((-minE) / range) * W));
   ctx.strokeStyle = 'rgba(255,255,255,0.3)';
   ctx.lineWidth = 1;
   ctx.setLineDash([3, 3]);
@@ -384,7 +398,7 @@ function drawHistogram(canvas, errors) {
 
   // X-axis labels
   ctx.fillStyle = 'rgba(138,155,181,0.8)';
-  ctx.font = `${9 * dpr / dpr}px JetBrains Mono, monospace`;
+  ctx.font = "9px JetBrains Mono, monospace";
   ctx.textAlign = 'left';
   ctx.fillText(minE.toExponential(2), 2, H - 4);
   ctx.textAlign = 'center';
@@ -406,4 +420,22 @@ function addLog(type, msg) {
   line.innerHTML = `<span class="log-time">[${time}]</span><span class="log-${type}">${msg}</span>`;
   console.appendChild(line);
   console.scrollTop = console.scrollHeight;
+}
+
+function updatePreviewViewers(meshA, topoA, meshB, topoB) {
+  const canvasRef = document.getElementById('canvas-ref');
+  const canvasLow = document.getElementById('canvas-low');
+
+  // Criar instâncias dedicadas de renderizadores para a pré-visualização
+  const rendererRef = new MeshRenderer(canvasRef);
+  const rendererLow = new MeshRenderer(canvasLow);
+
+  // Configurar e renderizar
+  rendererRef.setMesh(meshA, topoA);
+  rendererRef.setMode('solid'); // Modo fixo para visualização
+  rendererRef.render();
+
+  rendererLow.setMesh(meshB, topoB);
+  rendererLow.setMode('solid');
+  rendererLow.render();
 }

@@ -256,8 +256,13 @@ class MeshRenderer {
         ctx.stroke();
       }
     }
-  }
 
+  }
+  
+  render() {
+    this._render();
+  }
+  
   _drawEmpty(W, H) {
     const { ctx } = this;
     ctx.fillStyle = 'rgba(74,158,255,0.06)';
@@ -291,21 +296,22 @@ class MeshRenderer {
  * Negative = contraction (blue/cool), Positive = expansion (red/warm).
  */
 function errorToColor(err, maxErr, lit) {
-  if (maxErr === 0) return `rgb(120,120,120)`;
+  // Paper standard: Green means zero error
+  if (maxErr === 0) return `rgb(0,${Math.round(255*lit)},0)`;
   const t = Math.max(-1, Math.min(1, err / maxErr)); // [-1, 1]
 
   let r, g, b;
   if (t < 0) {
-    // Negative: interpolate from cool blue (0,212,170) to grey (130,130,140)
+    // Negative: Interpolate from Green (0) to Red (-1)
     const s = -t; // 0..1
-    r = lerp(130, 0,   s);
-    g = lerp(130, 212, s);
-    b = lerp(140, 170, s);
+    r = lerp(0, 255, s);
+    g = lerp(255, 0, s);
+    b = 0;
   } else {
-    // Positive: interpolate from grey (130,130,140) to warm red (255,107,107)
-    r = lerp(130, 255, t);
-    g = lerp(130, 107, t);
-    b = lerp(140, 107, t);
+    // Positive: Interpolate from Green (0) to Blue (1)
+    r = 0;
+    g = lerp(255, 0, t);
+    b = lerp(0, 255, t);
   }
 
   return `rgb(${Math.round(r*lit)},${Math.round(g*lit)},${Math.round(b*lit)})`;

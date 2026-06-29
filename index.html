@@ -16,14 +16,13 @@
     Metro<span>JS</span>
   </div>
   <ul class="nav-links">
-    <li><a href="#abstract">Abstract</a></li>
-    <li><a href="#theory">Theory</a></li>
+    <li><a href="#abstract">Resumo</a></li>
+    <li><a href="#theory">Teoria</a></li>
     <li><a href="#tool">Tool</a></li>
-    <li><a href="#topology">Topology</a></li>
-    <li><a href="#results">Results</a></li>
-    <li><a href="#references">References</a></li>
+    <li><a href="#results">Discussão</a></li>
+    <li><a href="#references">Referências</a></li>
   </ul>
-  <span class="nav-pill">CGV · Final Project</span>
+  <span class="nav-pill">CGV · Projeto AV2</span>
 </nav>
 
 <!-- ═══════════════════════════════════════════════════════════════════════
@@ -36,47 +35,19 @@
   <div class="hero-glow"></div>
   <div class="hero-content">
     <div class="hero-text">
-      <div class="hero-eyebrow">Computer Graphics &amp; Visualization · Final Project</div>
+      <div class="hero-eyebrow">Computação Gráfica &amp; Visualização · Projeto AV2</div>
       <h1 class="hero-title">
         <em>Metro</em>JS<br>
-        Topological Analysis &amp;<br>
-        Signed Error Mapping
+        Análise topológica &amp;<br>
+        Mapeamento de Erro Sinalizado
       </h1>
       <p class="hero-description">
-        An interactive web tool for measuring geometric fidelity between triangular
-        meshes using Monte Carlo surface sampling, BVH-accelerated nearest-point
-        queries, and signed distance heatmaps — inspired by the Metro algorithm
-        of Cignoni, Rocchini &amp; Scopigno (1998).
+       Uma ferramenta web interativa para medir a fidelidade geométrica entre malhas triangulares utilizando amostragem de superfície via Monte Carlo, consultas de ponto mais próximo aceleradas por BVH e mapas de calor de distância assinada — inspirada no algoritmo Metro de Cignoni, Rocchini e Scopigno (1998).
       </p>
       <div class="hero-meta">
-        <span class="meta-chip highlight">Topic 3 — Triangular Meshes</span>
+        <span class="meta-chip highlight">Tema 3 — Malhas triangulares</span>
         <span class="meta-chip">JavaScript + Canvas</span>
-        <span class="meta-chip">Monte Carlo Sampling</span>
-        <span class="meta-chip">BVH Acceleration</span>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="stat-grid">
-        <div class="stat-card">
-          <div class="stat-label">Algorithm</div>
-          <div class="stat-value accent" style="font-size:1.2rem">Metro</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Complexity</div>
-          <div class="stat-value accent" style="font-size:1.2rem">O(N log N)</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Error Type</div>
-          <div class="stat-value pos" style="font-size:1.1rem">Signed</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Runs in</div>
-          <div class="stat-value" style="font-size:1.1rem">Browser</div>
-        </div>
-      </div>
-      <div class="stat-card" style="text-align:center;padding:1rem">
-        <div class="stat-label" style="margin-bottom:0.6rem">Scroll to explore the implementation</div>
-        <div style="font-size:1.3rem;color:var(--text-dim)">↓</div>
+        <span class="meta-chip">Amostragem de Monte Carlo</span>
       </div>
     </div>
   </div>
@@ -88,39 +59,29 @@
      ABSTRACT
 ════════════════════════════════════════════════════════════════════════ -->
 <section class="section" id="abstract" data-section="abstract">
-  <div class="section-label">01 — Abstract</div>
-  <h2 class="section-title">Project Overview</h2>
+  <div class="section-label">01 — Resumo</div>
+  <h2 class="section-title">Overview</h2>
   <p class="section-sub">
-    What MetroJS does, why it matters, and how it approaches mesh quality evaluation.
+    O que o MetroJS faz, por que ele é importante e como ele aborda a avaliação da qualidade da malha.
   </p>
 
   <div class="theory-grid">
-    <div class="theory-card">
-      <div class="theory-icon">🎯</div>
-      <h3>Objective</h3>
-      <p>
-        Develop a browser-based tool to evaluate the 3D geometric fidelity of
-        simplified meshes against their high-resolution originals, computing
-        both standard numerical metrics and signed distance error maps.
-      </p>
-    </div>
+
     <div class="theory-card">
       <div class="theory-icon">🔬</div>
-      <h3>Method</h3>
+      <h3>Método</h3>
       <p>
-        Stochastic surface sampling via area-weighted Monte Carlo. For each
-        sample on the reference surface, the closest point on the approximation
-        is found using a Bounding Volume Hierarchy, and the signed distance
-        encodes geometric expansion or contraction.
+        Amostragem estocástica de superfície via método de Monte Carlo ponderado pela área. Para cada
+        amostra na superfície de referência, o ponto mais próximo na aproximação
+        é encontrado utilizando uma Hierarquia de Volumes Envolventes, e a distância com sinal
+        codifica a expansão ou contração geométrica.
       </p>
     </div>
     <div class="theory-card">
       <div class="theory-icon">📊</div>
-      <h3>Output</h3>
+      <h3>Saídas</h3>
       <p>
-        Hausdorff distance, RMS error, mean signed error, and a per-vertex
-        diverging heatmap rendered on the mesh surface. Topology validation
-        reports manifold status, Euler characteristic, and connected components.
+        Distância de Hausdorff, erro RMS, erro médio com sinal e um mapa de calor de divergência por vértice renderizado na superfície da malha. A validação de topologia relata o status de variedade, a característica de Euler e os componentes conexos.
       </p>
     </div>
   </div>
@@ -134,31 +95,22 @@
         ‖ <span class="var">p</span> − <span class="var">q</span> ‖
       </div>
       <div style="margin-top:0.75rem;font-size:0.8rem;color:var(--text-muted)">
-        One-sided Hausdorff distance from mesh A to mesh B
+        Distância unilateral de Hausdorff da malha A para a malha B
       </div>
     </div>
     <div class="formula-label">
-      The Metro algorithm approximates this with Monte Carlo sampling:
-      sample points on A, query nearest point on B, record the signed distance.
+      O algoritmo Metro aproxima isso utilizando amostragem de Monte Carlo:
+      amostrar pontos em A, consultar o ponto mais próximo em B e registrar a distância com sinal.
     </div>
   </div>
 
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;margin-top:2rem">
-    <div class="section-label" style="margin-bottom:1rem">Full Abstract</div>
+    <div class="section-label" style="margin-bottom:1rem">Resumo</div>
     <p style="color:var(--text-muted);line-height:1.85;font-size:0.92rem">
-      The project proposes the development of an interactive web application for the geometric and topological
-      inspection of triangular meshes, inspired by the fundamental concepts of the Metro tool. The primary
-      objective is to evaluate the 3D fidelity of simplified meshes against their high-resolution originals,
-      employing a stochastic surface sampling approach based on the Monte Carlo method. In addition to
-      extracting standard numerical metrics, the application validates mesh structural integrity — identifying
-      connected components and manifold properties — and calculates signed distance to visually distinguish
-      whether the approximation resulted in geometric expansion (positive error) or contraction (negative error).
-      The evaluation results are rendered as a heatmap for visualization.
+      O projeto propõe o desenvolvimento de uma aplicação web interativa voltada para a inspeção geométrica e topológica de malhas triangulares, inspirada nos conceitos fundamentais da ferramenta Metro. O objetivo principal é avaliar a fidelidade tridimensional de malhas simplificadas em relação às suas versões originais de alta resolução, utilizando uma abordagem de amostragem superficial estocástica baseada no método de Monte Carlo. Além de extrair métricas numéricas tradicionais, a aplicação deve validar a integridade estrutural das malhas (identificando componentes conexas e a propriedade manifold) e calcular a distância sinalizada para diferenciar visualmente se a aproximação resultou em expansão (erro positivo) ou retração (erro negativo) da geometria. Os resultados dessa avaliação são traduzidos em um mapa de calor para visualização.
     </p>
     <p style="color:var(--text-muted);line-height:1.85;font-size:0.92rem;margin-top:1rem">
-      The implementation is structured using JavaScript for evaluation and topological calculations, and HTML
-      Canvas for graphical rendering and visualization of the computed elements. The entire application runs
-      in the browser without any server dependency, making it portable and accessible for academic demonstration.
+      A implementação será estruturada em JavaScript para a parte de avaliação e cálculos topológicos, e HTML Canvas para a renderização gráfica e visualização dos elementos calculados.
     </p>
   </div>
 </section>
@@ -169,11 +121,11 @@
      THEORY
 ════════════════════════════════════════════════════════════════════════ -->
 <section class="section" id="theory" data-section="theory">
-  <div class="section-label">02 — Theory &amp; Methodology</div>
-  <h2 class="section-title">Implementation Pipeline</h2>
+  <div class="section-label">02 — Teoria &amp; Metodologia</div>
+  <h2 class="section-title">Pipeline de implementação</h2>
   <p class="section-sub">
-    From raw mesh files to signed error maps: the data structures and algorithms
-    that power MetroJS, grounded in computational geometry.
+    De arquivos de malha brutos a mapas de erro assinados: as estruturas de dados e os algoritmos
+    que impulsionam o MetroJS, fundamentados na geometria computacional.
   </p>
 
   <!-- Pipeline diagram -->
@@ -181,93 +133,80 @@
     <div class="pipe-step">
       <div class="pipe-node">📂</div>
       <div class="pipe-title">Parse OBJ</div>
-      <div class="pipe-desc">Read vertices, faces, and normals from .obj files</div>
+      <div class="pipe-desc">Ler vértices, faces e normais a partir do arquivo .obj</div>
     </div>
     <div class="pipe-step">
       <div class="pipe-node">📐</div>
-      <div class="pipe-title">Normalize</div>
-      <div class="pipe-desc">Center and scale both meshes to a unit bounding box</div>
+      <div class="pipe-title">Normalizar</div>
+      <div class="pipe-desc">Centralizar e redimensionar ambas as malhas para uma bounding box unitária</div>
     </div>
     <div class="pipe-step">
       <div class="pipe-node">🔗</div>
-      <div class="pipe-title">Build Topology</div>
-      <div class="pipe-desc">Edge map, adjacency, manifold check, Euler χ</div>
+      <div class="pipe-title">Construir a Topologia</div>
+      <div class="pipe-desc">Mapa de arestas, adjacência, checagem de variedade, χ de Euler</div>
     </div>
     <div class="pipe-step">
       <div class="pipe-node">🌲</div>
-      <div class="pipe-title">Build BVH</div>
-      <div class="pipe-desc">Bounding Volume Hierarchy over target mesh faces</div>
+      <div class="pipe-title">Construir BVH</div>
+      <div class="pipe-desc">Hierarquia de Volumes Envolventes sobre as faces da malha alvo</div>
     </div>
     <div class="pipe-step">
       <div class="pipe-node">🎲</div>
-      <div class="pipe-title">MC Sample</div>
-      <div class="pipe-desc">Area-weighted random sampling on source mesh</div>
+      <div class="pipe-title">Amostragem de MC</div>
+      <div class="pipe-desc">Amostragem aleatória ponderada pela área na malha de origem</div>
     </div>
     <div class="pipe-step">
       <div class="pipe-node">📍</div>
-      <div class="pipe-title">Nearest Point</div>
-      <div class="pipe-desc">BVH-accelerated closest-point query per sample</div>
+      <div class="pipe-title">Ponto mais próximo</div>
+      <div class="pipe-desc">Consulta de ponto mais próximo acelerada por BVH por amostra</div>
     </div>
     <div class="pipe-step">
       <div class="pipe-node">±</div>
-      <div class="pipe-title">Sign Distance</div>
-      <div class="pipe-desc">Normal-based sign: expansion (+) or contraction (−)</div>
+      <div class="pipe-title">Distância Sinalizada</div>
+      <div class="pipe-desc">Sinal baseado na normal: expansão (+) ou contração (−)</div>
     </div>
     <div class="pipe-step">
       <div class="pipe-node">🎨</div>
       <div class="pipe-title">Heatmap</div>
-      <div class="pipe-desc">Render diverging colour map on the source mesh</div>
+      <div class="pipe-desc">Renderizar mapa de cores divergentes na malha de origem</div>
     </div>
   </div>
 
   <div class="topo-grid" style="margin-top:3rem">
     <div class="topo-card">
-      <h3>🌲 Bounding Volume Hierarchy (BVH)</h3>
+      <h3>🌲 Hierarquia de Volumes Envolventes (BVH)</h3>
       <p>
-        Brute-force nearest-point queries scale as O(N·M), which is prohibitive
-        for large meshes. MetroJS builds an axis-aligned bounding box (AABB) tree
-        over the target mesh faces, recursively splitting on the longest axis at the
-        median centroid. This reduces nearest-point complexity to O(log N) per sample.
+        Consultas de ponto mais próximo por força bruta apresentam complexidade O(N·M), o que é proibitivo para malhas grandes. O MetroJS constrói uma árvore de caixas delimitadoras alinhadas aos eixos (AABB) sobre as faces da malha alvo, realizando divisões recursivas ao longo do eixo mais longo na mediana dos centroides. Isso reduz a complexidade da busca pelo ponto mais próximo para O(log N) por amostra.
       </p>
       <div class="euler-formula">
         T(N) = O(N log N) build + O(S log N) query
       </div>
       <p style="margin-top:0.75rem;font-size:0.8rem">
-        where N = target faces, S = number of MC samples.
+        onde N = faces alvo, S = número de amostras de MC.
       </p>
     </div>
     <div class="topo-card">
-      <h3>🎲 Area-Weighted Monte Carlo Sampling</h3>
+      <h3>🎲 Amostragem de Monte Carlo Ponderada pela Área</h3>
       <p>
-        To ensure uniform coverage over the mesh surface, faces are selected with
-        probability proportional to their area. A uniform random point within each
-        selected triangle is obtained using barycentric coordinates with the
-        square-root method to avoid clustering near the origin vertex.
+        Para garantir uma cobertura uniforme sobre a superfície da malha, as faces são selecionadas com probabilidade proporcional à sua área. Um ponto aleatório uniforme no interior de cada triângulo selecionado é obtido utilizando coordenadas baricêntricas com o método da raiz quadrada, para evitar o agrupamento próximo ao vértice de origem.
       </p>
       <div class="euler-formula">
         P(f<sub>i</sub>) = Area(f<sub>i</sub>) / Σ Area(f<sub>j</sub>)
       </div>
     </div>
     <div class="topo-card">
-      <h3>± Signed Distance Computation</h3>
+      <h3>± Cálculo da Distância Sinalizada</h3>
       <p>
-        Unsigned distance is insufficient for understanding the nature of the
-        approximation error. MetroJS assigns a sign by comparing the vector from the
-        closest point on B to the sample on A against the face normal at the closest
-        point. Alignment → positive (surface expanded); anti-alignment → negative
-        (surface contracted).
+        A distância sem considerar o sinal é insuficiente para compreender a natureza do erro de aproximação. O MetroJS atribui um sinal comparando o vetor que vai do ponto mais próximo em B até a amostra em A com a normal da face no ponto mais próximo. Alinhamento → positivo (superfície expandida); desalinhamento → negativo (superfície contraída).
       </p>
       <div class="euler-formula">
         sign = sgn( (p − q) · n̂<sub>q</sub> )
       </div>
     </div>
     <div class="topo-card">
-      <h3>🔺 Closest Point on Triangle</h3>
+      <h3>🔺 Ponto mais próximo no triângulo</h3>
       <p>
-        For each sample point, the exact closest point on a target triangle is
-        computed analytically using the Voronoi region decomposition (Eberly 2003).
-        The 7 regions of a triangle (3 vertices, 3 edges, 1 interior) are tested in
-        sequence, yielding the globally closest point without numerical iteration.
+        Para cada ponto de amostragem, o ponto exato mais próximo em um triângulo alvo é calculado analiticamente utilizando a decomposição em regiões de Voronoi (Eberly 2003). As 7 regiões de um triângulo (3 vértices, 3 arestas, 1 interior) são testadas em sequência, resultando no ponto globalmente mais próximo sem a necessidade de iteração numérica.
       </p>
       <div class="euler-formula">
         q* = argmin<sub>q ∈ △</sub> ‖p − q‖²
@@ -287,8 +226,8 @@
       </div>
     </div>
     <div class="formula-label">
-      Root Mean Square error over S Monte Carlo samples. Unlike Hausdorff, RMS is
-      robust to outliers and more representative of average mesh quality.
+      O erro quadrático médio (RMS) calculado sobre S amostras de Monte Carlo. Ao contrário da métrica de Hausdorff, o RMS é
+      robusto a *outliers* e mais representativo da qualidade média da malha.
     </div>
   </div>
 </section>
@@ -302,8 +241,8 @@
   <div class="section-label">03 — Interactive Tool</div>
   <h2 class="section-title">MetroJS Analyser</h2>
   <p class="section-sub">
-    Upload two <code style="font-family:var(--mono);color:var(--accent)">.obj</code> meshes:
-    the reference (Mesh A) and the simplified approximation (Mesh B).
+    Faça upload de duas malhas <code style="font-family:var(--mono);color:var(--accent)">.obj</code>:
+    a de origem/referência (Malha A) e a aproximação simplificada (Malha B).
     MetroJS will compute the signed Metro distance and render an error heatmap.
   </p>
 
@@ -311,15 +250,15 @@
   <div style="background:var(--accent-dim);border:1px solid rgba(74,158,255,0.3);border-radius:var(--radius-lg);padding:1rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
     <div>
       <div style="font-family:var(--display);font-weight:600;font-size:0.9rem;color:var(--text);margin-bottom:0.2rem">
-        ✦ Try with the built-in example
+        ✦ Teste com os exemplos prontos
       </div>
       <div style="font-size:0.78rem;color:var(--text-muted)">
-        Loads <code style="font-family:var(--mono);color:var(--accent)">sphere_ref.obj</code> (icosphere) as Mesh A
-        and <code style="font-family:var(--mono);color:var(--accent)">sphere_low.obj</code> (octahedron) as Mesh B — ready to analyse.
+        Carrega <code style="font-family:var(--mono);color:var(--accent)">sphere_ref.obj</code> (esfera) como Malha A
+        e <code style="font-family:var(--mono);color:var(--accent)">sphere_low.obj</code> (octaedro) como Malha B — prontos para análise.
       </div>
     </div>
     <button class="btn" id="load-example-btn" style="background:var(--accent);color:#fff;white-space:nowrap;flex-shrink:0">
-      ⬇ Load Example Meshes
+      ⬇ Carregar malhas de exemplo
     </button>
   </div>
 
@@ -331,7 +270,7 @@
       <div class="panel">
         <div class="panel-header">
           <span class="panel-title">
-            <span style="color:var(--accent)">◆</span> Mesh A — Reference
+            <span style="color:var(--accent)">◆</span> Malha A — Referência
           </span>
           <span class="panel-badge">Original</span>
         </div>
@@ -342,16 +281,16 @@
           <div class="upload-zone" id="drop-a">
             <div class="upload-icon">📁</div>
             <div class="upload-text">
-              <strong>Drop .obj file here</strong>
+              <strong>Solte um arquivo .obj aqui</strong>
             </div>
-            <div class="upload-formats">or use the button below</div>
+            <div class="upload-formats">ou use o botão abaixo</div>
           </div>
           <button class="btn btn-ghost mt-2" id="browse-a" style="width:100%;margin-top:0.6rem">
-            📂 Browse file…
+            📂 Procurar arquivo...
           </button>
           <div id="info-a" style="margin-top:1rem">
             <div class="empty-state" style="padding:1rem">
-              <div class="empty-text">Mesh info will appear here after upload.</div>
+              <div class="empty-text">As informações da malha irão aparecer após o upload.</div>
             </div>
           </div>
         </div>
@@ -361,25 +300,25 @@
       <div class="panel">
         <div class="panel-header">
           <span class="panel-title">
-            <span style="color:var(--pos)">◆</span> Mesh B — Approximation
+            <span style="color:var(--pos)">◆</span> Malha B — Aproximação
           </span>
-          <span class="panel-badge">Simplified</span>
+          <span class="panel-badge">Simplificada</span>
         </div>
         <div class="panel-body">
           <input type="file" id="upload-b" accept=".obj" style="display:none" />
           <div class="upload-zone" id="drop-b">
             <div class="upload-icon">📁</div>
             <div class="upload-text">
-              <strong>Drop .obj file here</strong>
+              <strong>Solte um arquivo .obj aqui</strong>
             </div>
-            <div class="upload-formats">or use the button below</div>
+            <div class="upload-formats">ou use o botão abaixo</div>
           </div>
           <button class="btn btn-ghost mt-2" id="browse-b" style="width:100%;margin-top:0.6rem">
-            📂 Browse file…
+            📂 Procurar arquivo...
           </button>
           <div id="info-b" style="margin-top:1rem">
             <div class="empty-state" style="padding:1rem">
-              <div class="empty-text">Mesh info will appear here after upload.</div>
+              <div class="empty-text">As informações da malha irão aparecer após o upload.</div>
             </div>
           </div>
         </div>
@@ -388,31 +327,31 @@
       <!-- Settings -->
       <div class="panel">
         <div class="panel-header">
-          <span class="panel-title">⚙ Parameters</span>
+          <span class="panel-title">⚙ Parâmetros</span>
         </div>
         <div class="panel-body">
           <div class="control-group">
             <div class="control-label">
-              Monte Carlo Samples
+              Amostras de Monte Carlo
               <span class="control-value" id="samples-val">10,000</span>
             </div>
             <input type="range" id="samples-range" min="1000" max="100000" step="1000" value="10000" />
             <div style="display:flex;justify-content:space-between;margin-top:0.3rem">
-              <span style="font-family:var(--mono);font-size:0.62rem;color:var(--text-dim)">1k (fast)</span>
-              <span style="font-family:var(--mono);font-size:0.62rem;color:var(--text-dim)">100k (precise)</span>
+              <span style="font-family:var(--mono);font-size:0.62rem;color:var(--text-dim)">1k (rápico)</span>
+              <span style="font-family:var(--mono);font-size:0.62rem;color:var(--text-dim)">100k (preciso)</span>
             </div>
           </div>
           <div class="control-group">
-            <div class="control-label">Render Mode</div>
+            <div class="control-label">Modo de Renderização</div>
             <select id="mode-select">
-              <option value="solid">Solid shading</option>
+              <option value="heatmap">Heatmap de erro sinalizado</option>
+              <option value="solid">Shading sólido</option>
               <option value="wireframe">Wireframe</option>
-              <option value="normals">Normal map</option>
-              <option value="heatmap">Error heatmap</option>
+              <option value="normals">Mapa normal</option>
             </select>
           </div>
           <button class="btn btn-primary mt-3" id="run-btn" disabled>
-            Upload both meshes to run
+            Carregue ambas as malhas para rodar
           </button>
         </div>
       </div>
@@ -434,16 +373,16 @@
       <div class="canvas-container">
         <canvas id="mesh-canvas"></canvas>
         <div class="canvas-overlay">
-          <span class="canvas-label">Mesh A (Reference)</span>
-          <span class="canvas-label" id="canvas-mode-label">Solid</span>
+          <span class="canvas-label">Malha A (Referência)</span>
+          <span class="canvas-label" id="canvas-mode-label">Sólido</span>
         </div>
-        <div class="canvas-hint">Drag to rotate · Scroll to zoom</div>
+        <div class="canvas-hint">Arraste para rotacionar · Scroll para zoom</div>
       </div>
 
       <!-- Progress (hidden until running) -->
       <div id="progress-wrap" class="panel hidden">
         <div class="panel-body progress-wrap">
-          <div class="progress-status" id="progress-status">Initialising…</div>
+          <div class="progress-status" id="progress-status">Inicializando...</div>
           <div class="progress-bar-outer">
             <div class="progress-bar-inner" id="progress-bar"></div>
           </div>
@@ -454,16 +393,16 @@
       <div class="panel">
         <div class="panel-body" style="padding:0.75rem 1rem">
           <div style="font-family:var(--mono);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);margin-bottom:0.5rem">
-            Signed Error — Heatmap Legend
+            Erro Sinalizado — Legenda do Heatmap
           </div>
           <div class="heatmap-legend">
-            <span class="legend-label neg">Contraction (−)</span>
+            <span class="legend-label neg">Contração (−)</span>
             <div class="legend-bar"></div>
-            <span class="legend-label pos">Expansion (+)</span>
+            <span class="legend-label pos">Expansão (+)</span>
           </div>
           <div style="font-size:0.72rem;color:var(--text-dim);margin-top:0.5rem">
-            Blue tones indicate the simplified mesh contracted relative to the original.
-            Red tones indicate expansion. Grey = zero error.
+            Tons de vermelho indicam que a malha simplificada está contraída em relação à original.
+            Tons de azul indicam expansão. Verde = erro zero.
           </div>
         </div>
       </div>
@@ -472,8 +411,8 @@
       <div id="results-section" class="hidden" style="display:flex;flex-direction:column;gap:1rem">
         <div class="panel">
           <div class="panel-header">
-            <span class="panel-title">📊 Numerical Results</span>
-            <span class="panel-badge">Metro Output</span>
+            <span class="panel-title">📊 Resultados Numéricos</span>
+            <span class="panel-badge">Saída do Metro</span>
           </div>
           <div class="panel-body">
             <div class="metrics-row" id="metrics-row"></div>
@@ -482,85 +421,29 @@
 
         <div class="panel">
           <div class="panel-header">
-            <span class="panel-title">📈 Error Distribution Histogram</span>
+            <span class="panel-title">📈 Histograma da distribuição de erro</span>
           </div>
           <div class="panel-body">
             <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.75rem">
-              Signed error distribution across all sample points.
-              A symmetric histogram centred at zero indicates a well-balanced
-              approximation with no systematic bias.
+              Distribuição de erros com sinal ao longo de todos os pontos de amostragem.
+              Um histograma simétrico centrado em zero indica uma aproximação
+              bem equilibrada, sem viés sistemático.
             </p>
             <canvas id="histogram-canvas" style="width:100%;height:120px;border-radius:var(--radius)"></canvas>
           </div>
         </div>
+
+        <div class="comparison-container" style="display:flex; gap: 1rem; margin-top: 1rem;">
+            <div class="panel" style="flex: 1;">
+                <div class="panel-header panel-title">Malha de Referência (A)</div>
+                <canvas id="canvas-ref" style="width:100%; height:200px;"></canvas>
+            </div>
+            <div class="panel" style="flex: 1;">
+                <div class="panel-header panel-title">Malha Simplificada (B)</div>
+                <canvas id="canvas-low" style="width:100%; height:200px;"></canvas>
+            </div>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider" />
-
-<!-- ═══════════════════════════════════════════════════════════════════════
-     TOPOLOGY
-════════════════════════════════════════════════════════════════════════ -->
-<section class="section" id="topology" data-section="topology">
-  <div class="section-label">04 — Topology</div>
-  <h2 class="section-title">Data Structures &amp; Topological Operators</h2>
-  <p class="section-sub">
-    The mathematical foundation for representing and validating triangular meshes
-    as topological surfaces.
-  </p>
-
-  <div class="topo-grid">
-    <div class="topo-card">
-      <h3>⬡ Half-Edge / Edge Map</h3>
-      <p>
-        MetroJS uses a directed edge map (each undirected edge stored once with a
-        canonical key <code style="font-family:var(--mono);font-size:0.8rem">min(a,b)_max(a,b)</code>) to
-        enumerate all edges and their adjacent faces. This allows O(1) lookup for
-        any edge's neighbourhood.
-      </p>
-      <p>
-        A triangular mesh is <em>manifold</em> if and only if every edge is adjacent
-        to exactly one (boundary) or two (interior) faces. Edges with three or more
-        adjacent faces are <em>non-manifold</em> and indicate invalid geometry.
-      </p>
-      <div class="euler-formula">Edge adjacency: O(F) time, O(E) space</div>
-    </div>
-    <div class="topo-card">
-      <h3>χ Euler Characteristic</h3>
-      <p>
-        The Euler characteristic is a topological invariant computed from the mesh
-        element counts. For a closed orientable surface it determines the genus g
-        (number of handles), relating to the mesh's topological complexity.
-      </p>
-      <div class="euler-formula">χ = V − E + F</div>
-      <br>
-      <div class="euler-formula">χ = 2 − 2g &nbsp; (closed, orientable)</div>
-      <p style="margin-top:0.75rem;font-size:0.8rem">
-        A sphere has χ=2, g=0. A torus has χ=0, g=1.
-        MetroJS reports these values for each uploaded mesh.
-      </p>
-    </div>
-    <div class="topo-card">
-      <h3>🔵 Connected Components</h3>
-      <p>
-        BFS traversal over the face adjacency graph identifies all connected
-        components. A mesh with multiple components may indicate floating geometry
-        or separate parts, which can affect the Metro analysis if the reference
-        surface is not fully connected.
-      </p>
-      <div class="euler-formula">BFS: O(V + E)</div>
-    </div>
-    <div class="topo-card">
-      <h3>📐 Vertex Normals</h3>
-      <p>
-        Vertex normals are computed by averaging the face normals of all adjacent
-        triangles, weighted by face area (implicitly via the cross-product magnitude).
-        They are used for smooth shading in the renderer and for the sign computation
-        in the Metro error mapping.
-      </p>
-      <div class="euler-formula">n̂<sub>v</sub> = Σ<sub>f∋v</sub> n<sub>f</sub> / ‖…‖</div>
     </div>
   </div>
 </section>
@@ -571,65 +454,40 @@
      RESULTS / DISCUSSION (populated by analysis)
 ════════════════════════════════════════════════════════════════════════ -->
 <section class="section" id="results" data-section="results">
-  <div class="section-label">05 — Results &amp; Discussion</div>
-  <h2 class="section-title">Interpreting Metro Output</h2>
+  <div class="section-label">04 — Resultados &amp; Discussão</div>
+  <h2 class="section-title">Interpretando a saída do Metro</h2>
   <p class="section-sub">
-    How to read the error metrics and heatmap produced by MetroJS, and what
-    they reveal about mesh simplification quality.
+    Como interpretar as métricas de erro e o mapa de calor gerados pelo MetroJS, e o que eles revelam sobre a qualidade da simplificação da malha.
   </p>
 
   <div class="theory-grid">
     <div class="theory-card">
       <div class="theory-icon">📏</div>
-      <h3>Hausdorff Distance</h3>
+      <h3>Distância de Hausdorff</h3>
       <p>
-        The one-sided Hausdorff distance H(A→B) is the maximum over all sample
-        points on A of the distance to the nearest point on B. It captures the
-        worst-case error. A symmetric metric H(A,B) = max(H(A→B), H(B→A)) can be
-        obtained by running the algorithm in both directions.
+        A distância de Hausdorff unidirecional H(A→B) é o valor máximo, dentre todos os pontos amostrais em A, da distância até o ponto mais próximo em B. Ela captura o erro no pior caso. Uma métrica simétrica H(A,B) = max(H(A→B), H(B→A)) pode ser obtida executando-se o algoritmo em ambas as direções.
       </p>
     </div>
     <div class="theory-card">
       <div class="theory-icon">📉</div>
       <h3>RMS Error</h3>
       <p>
-        The Root Mean Square error averages squared distances across all sample
-        points. It is more representative of overall mesh quality than Hausdorff,
-        being less sensitive to isolated outliers caused by small mesh features or
-        sampling noise.
+        O erro quadrático médio (RMS) calcula a média das distâncias ao quadrado de todos os pontos da amostra. Ele é mais representativo da qualidade geral da malha do que a métrica de Hausdorff, sendo menos sensível a *outliers* isolados causados ​​por pequenas características da malha ou ruído de amostragem.
       </p>
     </div>
     <div class="theory-card">
       <div class="theory-icon">🌡</div>
-      <h3>Signed Heatmap</h3>
+      <h3>Heatmap de erro sinalizado</h3>
       <p>
-        The diverging colour map — cool tones for contraction, warm tones for
-        expansion — lets a user immediately identify which regions of the mesh
-        were over-simplified (pulled inward) versus which expanded outward.
-        This directionality is not captured by unsigned metrics alone.
+        O mapa de cores divergente — tons frios para contração, tons quentes para expansão — permite que o usuário identifique imediatamente quais regiões da malha foram simplificadas em excesso (puxadas para dentro) e quais se expandiram para fora. Essa direcionalidade não é capturada apenas por métricas não assinadas.
       </p>
     </div>
   </div>
 
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;margin-top:2rem">
-    <div class="section-label" style="margin-bottom:1rem">Discussion Notes</div>
-    <p style="color:var(--text-muted);line-height:1.85;font-size:0.92rem">
-      The Metro algorithm was chosen as the reference method because it remains the standard
-      for mesh-to-mesh comparison in computational geometry research. Its stochastic nature
-      means results are approximate but converge quickly: at 10,000 samples the error is
-      typically within 5% of the true value, and at 50,000 samples this reduces to under 1%
-      for meshes with uniform feature distribution.
-    </p>
+    <div class="section-label" style="margin-bottom:1rem">Discussão</div>
     <p style="color:var(--text-muted);line-height:1.85;font-size:0.92rem;margin-top:1rem">
-      The BVH acceleration is critical for tractable computation in the browser. Without it,
-      each of S Monte Carlo samples would require O(F) triangle queries against the target mesh,
-      giving O(S·F) total cost. The BVH reduces this to O(S·log F), enabling 10k samples against
-      a 10k-face mesh to complete in under 2 seconds on modern hardware.
-    </p>
-    <p style="color:var(--text-muted);line-height:1.85;font-size:0.92rem;margin-top:1rem">
-      Limitations of the current implementation include: the analysis is one-sided (A→B only),
-      no adaptive sampling based on curvature, and the renderer uses a software rasterizer rather
-      than WebGL, limiting performance for meshes with more than ~50k faces.
+      O algoritmo Metro permanece como uma das principais referências para comparação entre malhas triangulares. Nesta implementação, a utilização de uma BVH torna a busca do ponto mais próximo computacionalmente eficiente, permitindo a análise de modelos com milhares de faces em tempo adequado para fins acadêmicos. Como limitações, a versão atual realiza apenas análise unidirecional (A→B), utiliza amostragem uniforme e um renderizador baseado em software.
     </p>
   </div>
 </section>
@@ -640,8 +498,8 @@
      REFERENCES
 ════════════════════════════════════════════════════════════════════════ -->
 <section class="section" id="references" data-section="references">
-  <div class="section-label">06 — References</div>
-  <h2 class="section-title">Bibliography</h2>
+  <div class="section-label">05 — Referências</div>
+  <h2 class="section-title">Bibliografia</h2>
   <p class="section-sub">
     Primary and secondary literature covering the Metro algorithm, mesh
     simplification, and topological mesh data structures.
@@ -715,11 +573,11 @@
       Metro<span style="color:var(--accent)">JS</span>
     </div>
     <div style="font-size:0.75rem;color:var(--text-dim);text-align:center">
-      Computer Graphics &amp; Visualization — Final Project ·
-      Topic 3: Data structures and topological operators for triangular meshes
+      Computação Gráfica &amp; Visualização — Projeto AV2 ·
+      Tema 3: Estruturas de dados e operadores topológicos para malhas triangulares.
     </div>
     <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-dim)">
-      JavaScript + HTML Canvas · No dependencies · No server
+      JavaScript + HTML Canvas
     </div>
   </div>
 </footer>
